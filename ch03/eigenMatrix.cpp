@@ -193,7 +193,7 @@ int main(){
      //convert vector v1 to quaternion
      auto qv = Eigen::Quaterniond(0, v1[0], v1[1], v1[2]);
      //qv.normalize();
-     //rotate v1 by qv
+     //rotate v1 by qv, Check the result with vr
      auto vr2 = q2*qv*q2.inverse();
      std::cout << "rotated v1: " << vr2.coeffs().transpose()<< std::endl;
 
