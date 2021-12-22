@@ -14,3 +14,5 @@ message(STATUS "EIGEN3_INCLUDE_DIRS found" ${EIGEN3_INCLUDE_DIRS})
 
 add_executable(useSophus useSophus.cpp)
 target_link_libraries(useSophus Sophus::Sophus)
+
+add_subdirectory(evaluation)
