@@ -5,48 +5,57 @@
 #include <opencv2/opencv.hpp>
 
 int main() {
-    //read image file
-    cv::Mat image = cv::imread(
-            "/Users/dinhnambkhn/Desktop/Visual_SLAM/Visual_SLAM_tutorial/ch05/BasicImage/ubuntu.png");
+    //read image
+    cv::Mat image = cv::imread("/home/dinhnambkhn/Desktop/Visual_SLAM_book/Visual_SLAM_tutorial/ch05/BasicImage/ubuntu.png");
+    //check image is loaded or not
     if (image.empty()) {
-        std::cout << "Can not read image file" << std::endl;
+        std::cout << "Can not load image" << std::endl;
         return -1;
     }
-    //print w and h channel
-    std::cout << "w: " << image.cols << " h: " << image.rows << " channel: " << image.channels() << std::endl;
 
-    //check type of image U8C1 or U8C3
-    if (image.type() == CV_8UC1) {
-        std::cout << "image is U8C1" << std::endl;
-    } else if (image.type() == CV_8UC3) {
-        std::cout << "image is U8C3" << std::endl;
+    //show w , h, channel
+    std::cout << "w: " << image.cols << std::endl;
+    std::cout << "h: " << image.rows << std::endl;
+    std::cout << "channel: " << image.channels() << std::endl;
+
+    //check image type
+    if(image.type() == CV_8UC1) {
+        std::cout << "image type: CV_8UC1" << std::endl;
+    } else if(image.type() == CV_8UC3) {
+        std::cout << "image type: CV_8UC3" << std::endl;
     } else {
-        std::cout << "image is not U8C1 or U8C3" << std::endl;
+        std::cout << "image type: unknown" << std::endl;
         return -1;
     }
 
-    //access pixel
-    //show the pixel value at 30,30 channel 0
-    std::cout << "pixel value at 30,30 channel 0: " << uint(image.at<uchar>(30, 30, 0)) << std::endl;
-    //show the pixel value at 30,30 channel 1
-    std::cout << "pixel value at 30,30 channel 1: " << uint(image.at<uchar>(30, 30, 1)) << std::endl;
+    //access pixel at 100, 100, red channel
+    std::cout << "red channel: " << (int)image.at<cv::Vec3b>(100, 100)[2] << std::endl;
 
-    //access pixel using pointer for
+    //clone image
+    cv::Mat image2 = image.clone();
+    //set block pixel 100, 100, size 20x20 to red
+    cv::Rect rect(100, 100, 20, 20);
+    image2(rect).setTo(cv::Scalar(0, 0, 255));
 
+    //draw a triangle on image
+    cv::Point pt1(100, 100);
+    cv::Point pt2(200, 200);
+    cv::Point pt3(300, 100);
+    std::vector<cv::Point> points;
+    points.push_back(pt1);
+    points.push_back(pt2);
+    points.push_back(pt3);
+    cv::fillConvexPoly(image2, points, cv::Scalar(0, 255, 0));
 
-    cv::Mat img_copy = image.clone();
+    //draw a line on image p1(100, 300) -> p2(400, 500)
+    cv::line(image2, cv::Point(100, 300), cv::Point(400, 500), cv::Scalar(0, 0, 255), 3);
+    //add text on image
+    cv::putText(image2, "this is an angle", cv::Point(100, 80), cv::FONT_HERSHEY_COMPLEX, 1, cv::Scalar(0, 100, 255), 2);
 
-    cv::Mat img_ref = image;
-    //set top left block size 30,30 from 0, 0 to 255
-    img_ref(cv::Rect(0, 0, 30, 30)).setTo(255);
-    //image show
-    cv::imshow("image", img_copy);
-
-    //cv::imshow("image_r", image);
-
-    cv::imshow("img_ref", img_ref);
+    //show image
+    cv::imshow("image pre", image);
+    cv::imshow("image af", image2);
     cv::waitKey(0);
-
 
     return 0;
 }

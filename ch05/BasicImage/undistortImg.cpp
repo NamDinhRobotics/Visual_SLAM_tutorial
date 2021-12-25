@@ -7,7 +7,7 @@
 
 int main() {
     cv::Mat image = cv::imread(
-            "/Users/dinhnambkhn/Desktop/Visual_SLAM/Visual_SLAM_tutorial/ch05/BasicImage/distorted.png", CV_8UC1);
+            "/home/dinhnambkhn/Desktop/Visual_SLAM_book/Visual_SLAM_tutorial/ch05/BasicImage/distorted.png", CV_8UC1);
     //check if image is loaded fine
     if (!image.data) {
         std::cout << "Could not open or find the image" << std::endl;
@@ -18,6 +18,9 @@ int main() {
     double k1 = -0.28340811, k2 = 0.07395907, p1 = 0.00019359, p2 = 1.76187114e-05;
     //intrinsic parameters 458.654, 457.296, 367.215, 248.375
     double fx = 458.654, fy = 457.296, cx = 367.215, cy = 248.375;
+
+    //create the distortion parameters
+    double k11 = -0.38340811, k12 = 0.09395907, k13 = 0.00059359, k14 = 6.76187114e-05;
 
     int rows = image.rows;
     int cols = image.cols;
@@ -58,6 +61,9 @@ int main() {
     //using OPENCV undistort function
     //undistorted image new
     cv::Mat image_undistorted_new(rows, cols, CV_8UC1);
+
+    cv::Mat image_undistorted_new2(rows, cols, CV_8UC1);
+
     //camera matrix
     cv::Mat cameraMatrix = (cv::Mat_<double>(3, 3) << fx, 0, cx, 0, fy, cy, 0, 0, 1);
     //distortion coefficients
@@ -67,14 +73,22 @@ int main() {
     //print the distortion coefficients
     std::cout << "Distortion Coefficients: " << std::endl << distCoeffs << std::endl;
 
+    //distortion coefficients
+    cv::Mat distCoeffs_new = (cv::Mat_<double>(5, 1) << k11, k12, k13, k14, 0);
+
+
     //transform the image to undistorted image
     cv::undistort(image, image_undistorted_new, cameraMatrix, distCoeffs);
+    //transfrom undistorted image to distorted image
+    cv::undistort(image_undistorted_new, image_undistorted_new2, cameraMatrix, distCoeffs_new);
 
     //show the image
     // the result is shown in the same window using opencv function and the manual method
     cv::imshow("image_distorted", image);
     cv::imshow("image_undistorted", image_undistorted);
     cv::imshow("image_undistorted_new", image_undistorted_new);
+    cv::imshow("image_undistorted_new2", image_undistorted_new2);
+
     cv::waitKey(0);
 
 
