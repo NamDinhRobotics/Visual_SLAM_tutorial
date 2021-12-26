@@ -6,6 +6,7 @@
 #include <sophus/se3.hpp>
 #include <pangolin/pangolin.h>
 #include <unistd.h>
+#include <open3d/Open3D.h>
 
 
 typedef std::vector<Sophus::SE3d, Eigen::aligned_allocator<Sophus::SE3d>> TrajectoryType;
@@ -120,7 +121,28 @@ int main() {
     }
     //show pointcloud size
     std::cout << "point-cloud size: " << pointcloud.size() << std::endl;
-    showPointCloud(pointcloud);
+    showPointCloud(pointcloud); //using pangolin
+
+    open3d::geometry::PointCloud pcd;
+    //copy pointcloud to pcd from eigen vector
+    for (auto & i : pointcloud) {
+        pcd.points_.emplace_back(i.head(3));
+        pcd.colors_.emplace_back(i.tail(3)/255.0);
+    }
+
+    std::shared_ptr<open3d::geometry::PointCloud> pcd_ptr = std::make_shared<open3d::geometry::PointCloud>(pcd);
+    //rotation matrix
+    //rotate point cloud
+    Eigen::Matrix3d rotation_matrix;
+    rotation_matrix << 1.0, 0.0, 0.0,
+            0, -1, 0,
+            0, 0, -1;
+
+    pcd_ptr->Rotate(rotation_matrix, Eigen::Vector3d(0, 0, 1));
+
+
+    //draw point cloud
+    open3d::visualization::DrawGeometries({pcd_ptr}, "Point Cloud"); //open3d
 
     return 0;
 }

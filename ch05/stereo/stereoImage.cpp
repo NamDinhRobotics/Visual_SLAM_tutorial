@@ -7,6 +7,8 @@
 #include <pangolin/pangolin.h>
 #include <unistd.h>
 
+#include <open3d/Open3D.h>
+
 void show3DpointCloud(const std::vector<Eigen::Vector4d, Eigen::aligned_allocator<Eigen::Vector4d>> &point_cloud);
 
 
@@ -88,6 +90,26 @@ int main() {
     cv::waitKey(0);
     //show 3D point cloud
     show3DpointCloud(point_cloud);
+
+    open3d::geometry::PointCloud pcl_open3d;
+    for (auto & p : point_cloud) {
+        pcl_open3d.points_.emplace_back(p.head(3));
+        pcl_open3d.colors_.emplace_back(Eigen::Vector3d(p[3], p[3], p[3]));
+    }
+
+    auto pcl_ptr = std::make_shared<open3d::geometry::PointCloud>(pcl_open3d);
+    Eigen::Matrix3d rotation_matrix;
+    //set rotation matrix to pitch 180
+    rotation_matrix << 1, 0, 0,
+            0, -1, 0,
+            0, 0, -1;
+
+    pcl_ptr->Rotate(rotation_matrix, Eigen::Vector3d(0, 0, 1));
+    //set viewpoint closer to the point cloud
+    pcl_ptr->Translate(Eigen::Vector3d(0, 0, -5));
+
+    open3d::visualization::DrawGeometries({pcl_ptr});
+
 
     return 0;
 }

@@ -8,5 +8,8 @@ include_directories(${EIGEN3_INCLUDE_DIRS})
 
 find_package(Pangolin REQUIRED)
 
+find_package(Open3D HINTS /home/dinhnambkhn/open3d_install/lib/cmake)
+
+
 add_executable(rgbdMap rgbdMap.cpp)
-target_link_libraries(rgbdMap ${Pangolin_LIBRARIES} ${OpenCV_LIBRARIES} Sophus::Sophus)
+target_link_libraries(rgbdMap ${Pangolin_LIBRARIES} ${OpenCV_LIBRARIES} Sophus::Sophus Open3D::Open3D)
