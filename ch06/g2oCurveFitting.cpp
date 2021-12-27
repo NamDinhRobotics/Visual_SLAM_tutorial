@@ -78,7 +78,7 @@ int main(){
 
     double ar = 1.0, br = 2.0, cr = 1.0; //ground truth value
     double ae = 2.0, be = -1.0, ce = 5.0; //initial guess
-    int N = 100; //number of data points
+    int N = 10000; //number of data points
     double w_sigma = 1.0; //sigma of noise
     double inv_sigma = 1.0 / w_sigma; //inverse of sigma
 
@@ -91,7 +91,7 @@ int main(){
     std::vector<double> x_data(N), y_data(N);
     //generate data points
     for (int i = 0; i < N; i++) {
-        x_data[i] = double(i) / 100.0;
+        x_data[i] = double(i) / 10000.0;
         y_data[i] = f(x_data[i]);
     }
     //check size of x, y
@@ -128,12 +128,14 @@ int main(){
         optimizer.addEdge(edge);
     }
 
+    tt.tic();
 
     optimizer.initializeOptimization();
-    optimizer.optimize(10);
+    optimizer.optimize(100);
 
+    std::cout << "CERES optimization time: " << tt.toc_us() << std::endl;
 
-    // 输出优化值
+    // print result
     Eigen::Vector3d abc_estimate = v->estimate();
     std::cout << "estimated model: " << abc_estimate.transpose() << std::endl;
 

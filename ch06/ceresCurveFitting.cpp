@@ -28,7 +28,7 @@ int main() {
 
     double ar = 1.0, br = 2.0, cr = 1.0; //ground truth value
     double ae = 2.0, be = -1.0, ce = 5.0; //initial guess
-    int N = 100; //number of data points
+    int N = 10000; //number of data points
     double w_sigma = 1.0; //sigma of noise
     double inv_sigma = 1.0 / w_sigma; //inverse of sigma
 
@@ -41,7 +41,7 @@ int main() {
     std::vector<double> x(N), y(N);
     //generate data points
     for (int i = 0; i < N; i++) {
-        x[i] = double(i) / 100.0;
+        x[i] = double(i) / 10000.0;
         y[i] = f(x[i]);
     }
     //check size of x, y
@@ -65,6 +65,7 @@ int main() {
     ceres::Solver::Options options;
     options.linear_solver_type = ceres::DENSE_NORMAL_CHOLESKY; //solver type CHOLESKY
     options.minimizer_progress_to_stdout = true; //print progress to stdout
+    options.max_num_iterations = 100; //max number of iterations
 
     //solve summary
     ceres::Solver::Summary summary;

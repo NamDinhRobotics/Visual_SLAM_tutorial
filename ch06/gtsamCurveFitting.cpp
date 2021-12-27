@@ -60,7 +60,7 @@ int main(){
 
     double ar = 1.0, br = 2.0, cr = 1.0; //ground truth value
     double ae = 2.0, be = -1.0, ce = 5.0; //initial guess
-    int N = 100; //number of data points
+    int N = 10000; //number of data points
     double w_sigma = 1.0; //sigma of noise
     double inv_sigma = 1.0 / w_sigma; //inverse of sigma
 
@@ -73,7 +73,7 @@ int main(){
     std::vector<double> x(N), y(N);
     //generate data points
     for (int i = 0; i < N; i++) {
-        x[i] = double(i) / 100.0;
+        x[i] = double(i) / 10000.0;
         y[i] = f(x[i]);
     }
     //check size of x, y
@@ -96,8 +96,16 @@ int main(){
     for(auto i = 0; i < N; i++){
         graph.emplace_shared<CurveFittingFactor>(1, x[i], y[i], CurveNoise);
     }
+    // 2. Create an optimizer and optimize
+    //create optional parameters
+    gtsam::LevenbergMarquardtParams params;
+    //set max iterations
+    params.setMaxIterations(100);
+
     tt.tic();
-    gtsam::LevenbergMarquardtOptimizer optimizer(graph, initialEstimate);
+    gtsam::LevenbergMarquardtOptimizer optimizer(graph, initialEstimate, params);
+    //set maxIterations = 100
+
     gtsam::Values result = optimizer.optimize();
 
     std::cout << "time optimize: " << tt.toc_us() << " us"<< std::endl;
