@@ -39,9 +39,10 @@ int main() {
             // transform the point from image coordinates to normalized coordinates
             double x = (u - cx) / fx; //x coordinate in the normalized plane
             double y = (v - cy) / fy; //y coordinate in the normalized plane
-            double r2 = x * x + y * y; // compute the radius of the pixel in the normalized plane
+
             //compute normalized coordinates to distorted coordinates
             //compute x_d and y_d
+            double r2 = x * x + y * y; // compute the radius of the pixel in the normalized plane
             double x_d = x * (1 + k1 * r2 + k2 * r2 * r2) + 2 * p1 * x * y + p2 * (r2 + 2 * x * x);
             double y_d = y * (1 + k1 * r2 + k2 * r2 * r2) + p1 * (r2 + 2 * y * y) + 2 * p2 * x * y;
 

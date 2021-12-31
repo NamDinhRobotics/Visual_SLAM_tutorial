@@ -19,6 +19,9 @@ int main(){
         std::cout << "Image is not loaded" << std::endl;
         return -1;
     }
+    //access pixel at rows = 20, cols = 50
+    //std::cout << "Pixel at row = 20, col = 50 is " << img_1.at<cv::Vec3b>(20, 50) << std::endl;
+
     //print the size of images
     std::cout << "Size of image 1: " << img_1.size() << std::endl;
     std::cout << "Size of image 2: " << img_2.size() << std::endl;
@@ -63,7 +66,7 @@ int main(){
     cv::waitKey(0);
 
     //find the max and min distance using minmax_element function
-    double min_dist = 0, max_dist = 0;
+    double min_dist, max_dist;
     std::vector<cv::DMatch>::iterator min_it, max_it;
     tt.tic();
     std::tie(min_it, max_it) = std::minmax_element(matches.begin(), matches.end(),
@@ -86,6 +89,15 @@ int main(){
             good_matches.push_back(m);
         }
     }
+    //find second keypoints in first image that correspond to second image
+    /*
+    std::vector<cv::Point2f> points_1, points_2;
+    for(auto m: good_matches){
+        points_1.push_back(keypoints_1[m.queryIdx].pt);
+        points_2.push_back(keypoints_2[m.trainIdx].pt);
+    }
+     */
+
     //print the number of good matches
     std::cout << "Number of good matches: " << good_matches.size() << std::endl;
     //draw good matches
