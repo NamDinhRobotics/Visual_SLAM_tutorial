@@ -11,8 +11,8 @@ int main(){
     TicToc tt;
 
     //read image color
-    cv::Mat img_1 = cv::imread("/Users/dinhnambkhn/Desktop/Visual_SLAM/Visual_SLAM_tutorial/ch07/1.png", cv::IMREAD_COLOR);
-    cv::Mat img_2 = cv::imread("/Users/dinhnambkhn/Desktop/Visual_SLAM/Visual_SLAM_tutorial/ch07/2.png", cv::IMREAD_COLOR);
+    cv::Mat img_1 = cv::imread("/home/dinhnambkhn/Desktop/Visual_SLAM_book/Visual_SLAM_tutorial/ch07/1.png", cv::IMREAD_COLOR);
+    cv::Mat img_2 = cv::imread("/home/dinhnambkhn/Desktop/Visual_SLAM_book/Visual_SLAM_tutorial/ch07/2.png", cv::IMREAD_COLOR);
 
     //check images are loaded
     if(!img_1.data || !img_2.data){
