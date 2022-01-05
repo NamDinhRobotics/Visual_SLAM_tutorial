@@ -4,7 +4,9 @@ set(CMAKE_BUILD_TYPE "Release")
 add_definitions("-DENABLE_SSE")
 
 # CMAKE_CXX_STANDARD 14
-set(CMAKE_CXX_FLAGS "-std=c++14 -O2 ${SSE_FLAGS} -msse4")
+ set(CMAKE_CXX_FLAGS "-std=c++14 -O2 ${SSE_FLAGS} -msse4")
+#standards c14
+#set(CMAKE_CXX_STANDARD 14)
 
 find_package(OpenCV REQUIRED)
 message(STATUS "OpenCV found: ${OpenCV_INCLUDE_DIRS}")
@@ -20,3 +22,6 @@ target_link_libraries(orb_cv ${OpenCV_LIBS})
 
 add_executable(orb_self orb_self.cpp)
 target_link_libraries(orb_self ${OpenCV_LIBS})
+
+add_executable(pose_est_2d2d pose_est_2d2d.cpp)
+target_link_libraries(pose_est_2d2d ${OpenCV_LIBS})

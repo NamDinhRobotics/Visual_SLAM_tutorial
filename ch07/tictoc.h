@@ -13,12 +13,12 @@ public:
         start = std::chrono::system_clock::now();
     }
 
-    auto toc_ms() {
+    int toc_ms() {
         end = std::chrono::system_clock::now();
         return std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     }
 
-    auto toc_us() {
+    int toc_us() {
         end = std::chrono::system_clock::now();
         return std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
     }
